@@ -21,6 +21,23 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding.root)
         initRecycler()
         addHash()
+        onEditTextChange()
+    }
+
+    fun onEditTextChange() {
+//        binding.editHash.doOnTextChanged { text, start, before, count ->
+//            if (text!!.contains("#")) {
+//                val listHash: List<String> = text?.split(Regex("(?=#)"))!!
+//                listHash.forEach {
+//                    if (it.contains("#")) {
+//
+//                        Log.e("ololo", it)
+//                        adapter.getEditText(it.toString())
+//                    }
+//                }
+//            }
+//            // adapter.getEditText(text.toString())
+//        }
     }
 
     private fun addHash() {
@@ -42,21 +59,39 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun getHashTagFromEditText() {
+        var hash = 0
         val textEdit = binding.editHash.text.toString()
-        val listHash: List<String> = textEdit?.split(Regex("(?=#)"))!!
+        val listHash: List<String> = textEdit?.split(" ")!!.map { it -> it.trim() }
         listHash.forEach {
-            hashList.add(it)
+            if (it.contains("#")) {
+                hashList.add(it)
+            }
         }
+
         hashList.forEach {
-            val list: List<String> = it?.split(" ")!!.map { it -> it.trim() }
-            list.forEach { it ->
-                if (it.contains("#")) {
-                    if (it.length > 1) {
-                        adapter.addHashTag(it)
+            val chars = it.toCharArray()
+            chars.forEach {
+                if (it == '#') {
+                    hash++
+                }
+            }
+
+
+            Log.e("ololo", hash.toString())
+            if (hash < 2) {
+                val hashList: List<String> = it.split(Regex("(?=#)"))
+                hashList.forEach {
+                    if (it.contains("#")) {
+                        if (it.length > 1) {
+                            adapter.addHashTag(it)
+                            Log.e("ololo", it)
+                        }
                     }
                 }
             }
+            hash = 0
         }
         hashList.clear()
+
     }
 }
