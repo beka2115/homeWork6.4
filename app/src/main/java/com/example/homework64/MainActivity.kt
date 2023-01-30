@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
+import androidx.core.view.isVisible
 import androidx.core.widget.doAfterTextChanged
 import androidx.core.widget.doBeforeTextChanged
 import androidx.core.widget.doOnTextChanged
@@ -25,6 +26,26 @@ class MainActivity : AppCompatActivity() {
     }
 
     fun onEditTextChange() {
+//        if (binding.editHash.text.isEmpty()){
+//            adapter.isEditEmpty(true)
+//        }
+//        if (binding.editHash.text.isEmpty()){
+//            binding.recyclerHash.isVisible = false
+//        }else{
+//            binding.recyclerHash.isVisible = true
+//        }
+
+        binding.editHash.doOnTextChanged { text, start, before, count ->
+            adapter.addListToshow(text.toString())
+            //adapter.addListToshow(getHashTagFromEditText(text))
+        }
+        binding.editHash.doBeforeTextChanged { text, start, count, after ->
+            adapter.addListToshow(text.toString())
+        }
+//        binding.editHash.doAfterTextChanged {
+//            adapter.addListToshow(binding.editHash.toString())
+//        }
+
 //        binding.editHash.doOnTextChanged { text, start, before, count ->
 //            if (text!!.contains("#")) {
 //                val listHash: List<String> = text?.split(Regex("(?=#)"))!!
@@ -44,7 +65,7 @@ class MainActivity : AppCompatActivity() {
         with(binding) {
             btnSend.setOnClickListener {
                 if (editHash.text.isNotEmpty()) {
-                    getHashTagFromEditText()
+                    adapter.addHashTag(getHashTagFromEditText(binding.editHash.text.toString()))
                 }
                 editHash.text.clear()
             }
@@ -58,9 +79,10 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    private fun getHashTagFromEditText() {
+    private fun getHashTagFromEditText(comeText:String):ArrayList<String> {
+        var result = arrayListOf<String>()
         var hash = 0
-        val textEdit = binding.editHash.text.toString()
+        val textEdit = comeText
         val listHash: List<String> = textEdit?.split(" ")!!.map { it -> it.trim() }
         listHash.forEach {
             if (it.contains("#")) {
@@ -75,16 +97,12 @@ class MainActivity : AppCompatActivity() {
                     hash++
                 }
             }
-
-
-            Log.e("ololo", hash.toString())
             if (hash < 2) {
                 val hashList: List<String> = it.split(Regex("(?=#)"))
-                hashList.forEach {
-                    if (it.contains("#")) {
-                        if (it.length > 1) {
-                            adapter.addHashTag(it)
-                            Log.e("ololo", it)
+                hashList.forEach {hash ->
+                    if (hash.contains("#")) {
+                        if (hash.length > 1) {
+                            result.add(hash)
                         }
                     }
                 }
@@ -92,6 +110,6 @@ class MainActivity : AppCompatActivity() {
             hash = 0
         }
         hashList.clear()
-
+        return result
     }
 }
