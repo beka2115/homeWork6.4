@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">homeWork6.4</string>
+    <string name="hash">#</string>
+    <string name="hashtag">HashTag</string>
 </resources>

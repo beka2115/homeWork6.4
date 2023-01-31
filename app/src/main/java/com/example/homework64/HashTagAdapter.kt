@@ -1,15 +1,12 @@
 package com.example.homework64
 
 import android.annotation.SuppressLint
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
 import com.example.homework64.databinding.ItemHashBinding
 
 class HashTagAdapter : RecyclerView.Adapter<HashTagAdapter.HashTagViewHolder>() {
-
     private val listToShow: ArrayList<String> = arrayListOf()
     private val hashList: ArrayList<String> = arrayListOf()
 
@@ -37,6 +34,7 @@ class HashTagAdapter : RecyclerView.Adapter<HashTagAdapter.HashTagViewHolder>() 
         notifyDataSetChanged()
     }
 
+    @SuppressLint("NotifyDataSetChanged")
     fun addListToshow(text: String) {
         listToShow.clear()
         if (text.contains("#")) {
