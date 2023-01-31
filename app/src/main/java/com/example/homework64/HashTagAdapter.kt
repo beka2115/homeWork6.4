@@ -12,7 +12,6 @@ class HashTagAdapter : RecyclerView.Adapter<HashTagAdapter.HashTagViewHolder>() 
 
     private val listToShow: ArrayList<String> = arrayListOf()
     private val hashList: ArrayList<String> = arrayListOf()
-    private var startText: String = "#hel"
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): HashTagViewHolder {
         return HashTagViewHolder(
@@ -30,51 +29,30 @@ class HashTagAdapter : RecyclerView.Adapter<HashTagAdapter.HashTagViewHolder>() 
 
     override fun onBindViewHolder(holder: HashTagViewHolder, position: Int) {
         holder.bind(listToShow[position])
-        Log.e("ololo", listToShow[position])
-
     }
 
     @SuppressLint("NotifyDataSetChanged")
-    fun addHashTag(hash: ArrayList<String>) {
-        hashList.addAll(hash)
+    fun addHashTag(hash:String) {
+        hashList.add(hash)
         notifyDataSetChanged()
     }
 
     fun addListToshow(text: String) {
         listToShow.clear()
-        Log.e("ololo",text)
-        if (text.isNotEmpty()) {
+        if (text.contains("#")) {
             hashList.forEach {
                 if (it.startsWith(text)) {
                     listToShow.add(it)
                 }
             }
         }
-        //  Log.e("ololo", listToShow.toString())
-        notifyDataSetChanged()
-    }
-
-//   fun  isEditEmpty(answer:Boolean){
-//        if (answer == true){
-//            listToShow.clear()
-//        }
-//       notifyDataSetChanged()
-//    }
-
-    @SuppressLint("NotifyDataSetChanged")
-    fun getEditText(text: String) {
-        startText = text
         notifyDataSetChanged()
     }
 
     inner class HashTagViewHolder(private val binding: ItemHashBinding) :
         RecyclerView.ViewHolder(binding.root) {
         fun bind(hash: String) {
-
-
             binding.textHash.text = hash
-
-
         }
     }
 }
